@@ -18,8 +18,8 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build
       run: cargo run --release --bin sakura-sdk-server
-cargo run --release --bin sakura-dispatch-server
-cargo run --release --bin sakura-gate-server
-cargo run --release --bin sakura-game-server
+           cargo run --release --bin sakura-dispatch-server
+           cargo run --release --bin sakura-gate-server
+           cargo run --release --bin sakura-game-server
     - name: Run tests
       run: cargo test --verbose
