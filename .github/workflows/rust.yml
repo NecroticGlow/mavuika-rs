@@ -1,13 +1,13 @@
-name: Build and Run Sakura Servers
+name: Build and Release
 
 on:
   push:
-    branches: [ main, develop ] # Adjust branches as needed
-  pull_request:
-    branches: [ main, develop ]
+    branches: [ main ] # 或者你的主分支名称
+  release:
+    types: [ created ]
 
 jobs:
-  build-and-run:
+  build-and-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -15,24 +15,31 @@ jobs:
       - name: Install Rust
         uses: actions/setup-rust@v3
         with:
-          rust-version: stable # Or specify a version like 1.60
+          rust-version: stable
 
-      - name: Build Release Binaries
-        run: cargo build --release
+      - name: Build sakura-sdk-server
+        run: cargo build --release --bin sakura-sdk-server
 
-      - name: Run SDK Server
-        run: cargo run --release --bin sakura-sdk-server & # Run in background
+      - name: Build sakura-dispatch-server
+        run: cargo build --release --bin sakura-dispatch-server
 
-      - name: Run Dispatch Server
-        run: cargo run --release --bin sakura-dispatch-server &
+      - name: Build sakura-gate-server
+        run: cargo build --release --bin sakura-gate-server
 
-      - name: Run Gate Server
-        run: cargo run --release --bin sakura-gate-server &
+      - name: Build sakura-game-server
+        run: cargo build --release --bin sakura-game-server
 
-      - name: Run Game Server
-        run: cargo run --release --bin sakura-game-server &
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: server-binaries
+          path: target/release
 
-      - name: Keep Workflow Alive (Important!)
-        run: wait # Prevents the workflow from exiting prematurely
-
-      # Optional: Add steps for testing, deployment, etc.
+      # 可选：发布到 GitHub Releases
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/release/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
