@@ -21,23 +21,13 @@ jobs:
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
-        with:
-          vs-version: latest
-
-      - name: Add MSVC tools to PATH
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-          architecture: 'x64'
-
-      #  如果需要构建 native libraries，请在此处添加步骤
 
       - name: Build Rust project
         run: cargo build --release
 
-      - name: Run servers (选择以下一种方案)
+      #  选择以下一种方案，并删除其他方案的注释
 
-        # 方案一：顺序执行
+      # 方案一：顺序执行
       - name: Run sakura-sdk-server
         run: cargo run --release --bin sakura-sdk-server
       - name: Run sakura-dispatch-server
