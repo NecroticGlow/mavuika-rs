@@ -25567,30 +25567,53 @@ pub struct GmQueryPathRsp {
     #[prost(enumeration = "GmQueryPathRspPathStatusType", tag = "7")]
     pub query_status: i32,
 }
-syntax = "proto3";
-
-message GetPlayerTokenReq {
-  string ticket = 1;
-  string client_rand_key = 2;
-  string psn_id = 3;
-  string account_ext = 4;
-  string account_uid = 5;
-  string account_token = 6;
-  string client_ip_str = 7;
-  string psn_region = 8;
-  string birthday = 9;
-  string country_code = 10;
-  string online_id = 11;
-  uint32 lang = 12;
-  uint32 account_type = 13;
-  uint32 uid = 14;
-  uint32 platform_type = 15;
-  uint32 key_id = 16;
-  uint32 cloud_client_ip = 17;
-  bool is_guest = 18;
-  uint32 channel_id = 19;
-  uint32 sub_channel_id = 20;
-  uint32 minors_reg_min_age = 21;
+#[derive(sakura_proto_derive::CmdID)]
+#[cmdid(101)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPlayerTokenReq {
+    #[prost(string, tag = "1")]
+    pub ticket: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub client_rand_key: ::prost::alloc::string::String,
+    #[prost(string, tag = "3")]
+    pub psn_id: ::prost::alloc::string::String,
+    #[prost(string, tag = "4")]
+    pub account_ext: ::prost::alloc::string::String,
+    #[prost(string, tag = "5")]
+    pub account_uid: ::prost::alloc::string::String,
+    #[prost(string, tag = "6")]
+    pub account_token: ::prost::alloc::string::String,
+    #[prost(string, tag = "7")]
+    pub client_ip_str: ::prost::alloc::string::String,
+    #[prost(string, tag = "8")]
+    pub psn_region: ::prost::alloc::string::String,
+    #[prost(string, tag = "9")]
+    pub birthday: ::prost::alloc::string::String,
+    #[prost(string, tag = "10")]
+    pub country_code: ::prost::alloc::string::String,
+    #[prost(string, tag = "11")]
+    pub online_id: ::prost::alloc::string::String,
+    #[prost(uint32, tag = "12")]
+    pub lang: u32,
+    #[prost(uint32, tag = "13")]
+    pub account_type: u32,
+    #[prost(uint32, tag = "14")]
+    pub uid: u32,
+    #[prost(uint32, tag = "15")]
+    pub platform_type: u32,
+    #[prost(uint32, tag = "16")]
+    pub key_id: u32,
+    #[prost(uint32, tag = "17")]
+    pub cloud_client_ip: u32,
+    #[prost(bool, tag = "18")]
+    pub is_guest: bool,
+    #[prost(uint32, tag = "19")]
+    pub channel_id: u32,
+    #[prost(uint32, tag = "20")]
+    pub sub_channel_id: u32,
+    #[prost(uint32, tag = "21")]
+    pub minors_reg_min_age: u32,
+}
 #[derive(sakura_proto_derive::CmdID)]
 #[cmdid(102)]
 #[derive(Clone, PartialEq, ::prost::Message)]
