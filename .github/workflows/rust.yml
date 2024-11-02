@@ -12,10 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Rust
-        uses: actions/setup-rust@v3
-        with:
-          rust-version: stable
+      - name: Rust Marker Linter
+        uses: rust-marker/marker@v0.4.3
+        with: 
+          
 
       - name: Build sakura-sdk-server
         run: cargo build --release --bin sakura-sdk-server
