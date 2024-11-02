@@ -1,44 +1,48 @@
-name: Build and Release
+name: Rust Servers Workflow
 
 on:
   push:
-    branches: [ main ] # 或者你的主分支名称
-  release:
-    types: [ created ]
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build-and-release:
-    runs-on: ubuntu-latest
+  build-and-run:
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Rust Marker Linter
-        uses: rust-marker/marker@v0.4.3
-         
-        
-      - name: Build sakura-sdk-server
-        run: cargo build --release --bin sakura-sdk-server
-
-      - name: Build sakura-dispatch-server
-        run: cargo build --release --bin sakura-dispatch-server
-
-      - name: Build sakura-gate-server
-        run: cargo build --release --bin sakura-gate-server
-
-      - name: Build sakura-game-server
-        run: cargo build --release --bin sakura-game-server
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
         with:
-          name: server-binaries
-          path: target/release
+          toolchain: stable
+          override: true
+          target: x86_64-pc-windows-msvc
 
-      # 可选：发布到 GitHub Releases
-      - name: Release
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
         with:
-          files: target/release/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          vs-version: latest
+
+      - name: Add MSVC tools to PATH
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+          architecture: 'x64'
+
+      #  如果需要构建 native libraries，请在此处添加步骤
+
+      - name: Build Rust project
+        run: cargo build --release
+
+      - name: Run servers (选择以下一种方案)
+
+        # 方案一：顺序执行
+      - name: Run sakura-sdk-server
+        run: cargo run --release --bin sakura-sdk-server
+      - name: Run sakura-dispatch-server
+        run: cargo run --release --bin sakura-dispatch-server
+      - name: Run sakura-gate-server
+        run: cargo run --release --bin sakura-gate-server
+      - name: Run sakura-game-server
+        run: cargo run --release --bin sakura-game-server
