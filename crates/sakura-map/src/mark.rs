@@ -17,8 +17,8 @@ pub fn mark_map(
                 request.op, request.mark, request.old
             );
 
-            if let (Operation::Add, Some(mark), _) = (request.op(), request.mark, request.old) {
-                match mark.point_type() {
+            match (request.op(), request.mark, request.old) {
+                (Operation::Add, Some(mark), _) => match mark.point_type() {
                     MapMarkPointType::Npc => {
                         debug_events.send(DebugCommandEvent {
                             executor_uid: message.sender_uid(),
@@ -27,7 +27,8 @@ pub fn mark_map(
                                     .name
                                     .split(' ')
                                     .next()
-                                    .and_then(|s| s.parse::<u32>().ok()),
+                                    .and_then(|s| s.parse::<u32>().ok())
+                                    .map(|id| id.to_string()), // 转换为 Option<String>
                                 position: (
                                     mark.pos.unwrap_or_default().x,
                                     mark.pos.unwrap_or_default().z,
@@ -44,14 +45,15 @@ pub fn mark_map(
                                     mark.name
                                         .split(' ')
                                         .next()
-                                        .and_then(|s| s.parse::<f32>().ok()),
+                                        .and_then(|s| s.parse::<f32>().ok()), // 直接处理，不需要 flatten
                                     mark.pos.unwrap_or_default().z,
                                 ),
                             },
                         });
                     }
                     _ => (),
-                }
+                },
+                _ => (),
             }
         }
     }
