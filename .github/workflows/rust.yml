@@ -28,11 +28,11 @@ jobs:
       #  选择以下一种方案，并删除其他方案的注释
 
       # 方案一：顺序执行
-      - name: Run sakura-sdk-server
-        run: cargo run --release --bin sakura-sdk-server
-      - name: Run sakura-dispatch-server
-        run: cargo run --release --bin sakura-dispatch-server
-      - name: Run sakura-gate-server
-        run: cargo run --release --bin sakura-gate-server
-      - name: Run sakura-game-server
-        run: cargo run --release --bin sakura-game-server
+      #- name: Run sakura-sdk-server
+      #  run: cargo run --release --bin sakura-sdk-server
+      #- name: Run sakura-dispatch-server
+      #  run: cargo run --release --bin sakura-dispatch-server
+      #- name: Run sakura-gate-server
+       # run: cargo run --release --bin sakura-gate-server
+     # - name: Run sakura-game-server
+      #  run: cargo run --release --bin sakura-game-server
