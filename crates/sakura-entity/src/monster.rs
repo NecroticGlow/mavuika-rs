@@ -14,6 +14,7 @@ pub struct MonsterBundle {
     pub level: Level,
     pub transform: Transform,
     pub fight_properties: FightProperties,
+    pub life_state: LifeState,
 }
 
 #[derive(QueryData)]
@@ -23,6 +24,7 @@ pub struct MonsterQueryReadOnly {
     pub level: &'static Level,
     pub transform: &'static Transform,
     pub fight_properties: &'static FightProperties,
+    pub life_state: &'static LifeState,
 }
 
 pub fn notify_appear_monster_entities(
@@ -41,8 +43,8 @@ pub fn notify_appear_monster_entities(
                 entity_id: monster_data.entity_id.0,
                 name: String::new(),
                 motion_info: Some(MotionInfo {
-                    pos: Some(monster_data.transform.position.clone().into()),
-                    rot: Some(monster_data.transform.rotation.clone().into()),
+                    pos: Some(monster_data.transform.position.into()),
+                    rot: Some(monster_data.transform.rotation.into()),
                     speed: Some(Vector::default()),
                     ..Default::default()
                 }),
@@ -56,7 +58,7 @@ pub fn notify_appear_monster_entities(
                         prop_value: *v,
                     })
                     .collect(),
-                life_state: 1,
+                life_state: *monster_data.life_state as u32,
                 animator_para_list: vec![AnimatorParameterValueInfoPair {
                     name_id: 0,
                     animator_para: Some(AnimatorParameterValueInfo::default()),
@@ -67,7 +69,7 @@ pub fn notify_appear_monster_entities(
                 entity_environment_info_list: Vec::with_capacity(0),
                 entity_authority_info: Some(EntityAuthorityInfo {
                     ability_info: Some(AbilitySyncStateInfo::default()),
-                    born_pos: Some(monster_data.transform.position.clone().into()),
+                    born_pos: Some(monster_data.transform.position.into()),
                     client_extra_info: Some(EntityClientExtraInfo {
                         skill_anchor_position: Some(Vector::default()),
                     }),

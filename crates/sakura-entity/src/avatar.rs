@@ -12,6 +12,12 @@ pub struct Equipment {
     pub weapon: Entity,
 }
 
+#[derive(Component)]
+pub struct AvatarAppearance {
+    pub flycloak_id: u32,
+    pub costume_id: u32,
+}
+
 #[derive(Event)]
 pub struct AvatarEquipChangeEvent {
     pub player_uid: u32,
@@ -53,9 +59,11 @@ pub struct AvatarBundle {
     pub control_peer: ControlPeer,
     pub skill_depot: SkillDepot,
     pub equipment: Equipment,
+    pub appearance: AvatarAppearance,
     pub transform: Transform,
     pub owner_player_uid: OwnerPlayerUID,
     pub fight_properties: FightProperties,
+    pub life_state: LifeState,
     pub ability: Ability,
     pub born_time: BornTime,
     pub index_in_scene_team: IndexInSceneTeam,
@@ -73,9 +81,11 @@ pub struct AvatarQueryReadOnly {
     pub control_peer: &'static ControlPeer,
     pub skill_depot: &'static SkillDepot,
     pub equipment: &'static Equipment,
+    pub appearance: &'static AvatarAppearance,
     pub transform: &'static Transform,
     pub owner_player_uid: &'static OwnerPlayerUID,
     pub fight_properties: &'static FightProperties,
+    pub life_state: &'static LifeState,
     pub ability: &'static Ability,
     pub born_time: &'static BornTime,
     pub index_in_scene_team: &'static IndexInSceneTeam,
@@ -103,8 +113,8 @@ pub fn notify_appear_avatar_entities(
                     entity_id: avatar_data.entity_id.0,
                     name: String::new(),
                     motion_info: Some(MotionInfo {
-                        pos: Some(avatar_data.transform.position.clone().into()),
-                        rot: Some(avatar_data.transform.rotation.clone().into()),
+                        pos: Some(avatar_data.transform.position.into()),
+                        rot: Some(avatar_data.transform.rotation.into()),
                         speed: Some(Vector::default()),
                         ..Default::default()
                     }),
@@ -121,7 +131,7 @@ pub fn notify_appear_avatar_entities(
                             prop_value: *v,
                         })
                         .collect(),
-                    life_state: 1,
+                    life_state: *avatar_data.life_state as u32,
                     animator_para_list: vec![AnimatorParameterValueInfoPair {
                         name_id: 0,
                         animator_para: Some(AnimatorParameterValueInfo::default()),
@@ -166,9 +176,9 @@ pub fn notify_appear_avatar_entities(
                         proud_skill_extra_level_map: HashMap::with_capacity(0),
                         server_buff_list: Vec::with_capacity(0),
                         team_resonance_list: Vec::with_capacity(0),
-                        wearing_flycloak_id: 140001,
+                        wearing_flycloak_id: avatar_data.appearance.flycloak_id,
                         born_time: avatar_data.born_time.0,
-                        costume_id: 0,
+                        costume_id: avatar_data.appearance.costume_id,
                         cur_vehicle_info: None,
                         excel_info: Some(AvatarExcelInfo::default()),
                         anim_hash: 0,

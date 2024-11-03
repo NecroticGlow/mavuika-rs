@@ -32,6 +32,13 @@ pub struct ProtocolEntityID(pub u32);
 #[derive(Component)]
 pub struct FightProperties(pub HashMap<FightPropType, f32>);
 
+#[derive(Component, Clone, Copy, PartialEq, Eq)]
+#[repr(u32)]
+pub enum LifeState {
+    Alive = 1,
+    Dead = 2,
+}
+
 #[derive(Component)]
 pub struct Visible;
 
@@ -45,7 +52,7 @@ pub struct GadgetID(pub u32);
 pub struct EntityCounter(u32);
 
 impl EntityCounter {
-    pub fn next(&mut self) -> u32 {
+    pub fn inc(&mut self) -> u32 {
         self.0 += 1;
         self.0
     }
@@ -66,20 +73,18 @@ impl FightProperties {
         let curve_info = match config_type {
             GrowCurveConfigType::Avatar => avatar_curve_excel_config_collection::iter()
                 .find(|c| c.level == level)
-                .map(|c| {
+                .and_then(|c| {
                     c.curve_infos
                         .iter()
                         .find(|c| c.grow_curve_type == prop_grow_curve.grow_curve)
-                })
-                .flatten(),
+                }),
             GrowCurveConfigType::Monster => monster_curve_excel_config_collection::iter()
                 .find(|c| c.level == level)
-                .map(|c| {
+                .and_then(|c| {
                     c.curve_infos
                         .iter()
                         .find(|c| c.grow_curve_type == prop_grow_curve.grow_curve)
-                })
-                .flatten(),
+                }),
         };
 
         if let Some(curve_info) = curve_info {

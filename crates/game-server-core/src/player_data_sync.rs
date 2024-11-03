@@ -2,7 +2,10 @@ use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
 use common::time_util;
 use sakura_data::excel;
-use sakura_entity::{common::create_fight_props, int_prop_map};
+use sakura_entity::{
+    common::{create_fight_props, LifeState},
+    int_prop_map,
+};
 use sakura_message::output::MessageOutput;
 use sakura_persistence::{player_information::ItemInformation, Players};
 use sakura_proto::*;
@@ -108,9 +111,12 @@ pub fn sync_avatar_data(players: Res<Players>, out: Res<MessageOutput>) {
                             equip_guid_list: vec![a.weapon_guid],
                             skill_depot_id: a.skill_depot_id,
                             born_time: a.born_time,
-                            life_state: 1,               // TODO!
-                            avatar_type: 1,              // TODO!
-                            wearing_flycloak_id: 140001, // TODO!
+                            life_state: (a.cur_hp > 0.0)
+                                .then_some(LifeState::Alive)
+                                .unwrap_or(LifeState::Dead)
+                                as u32,
+                            avatar_type: 1, // TODO!
+                            wearing_flycloak_id: a.wearing_flycloak_id,
                             fetter_info: Some(AvatarFetterInfo::default()),
                             skill_level_map: a.skill_level_map.clone(),
                             inherent_proud_skill_list: a.inherent_proud_skill_list.clone(),
@@ -149,6 +155,12 @@ pub fn sync_avatar_data(players: Res<Players>, out: Res<MessageOutput>) {
                     })
                     .collect(),
                 cur_avatar_team_id: 1,
+                owned_flycloak_list: player_info
+                    .avatar_module
+                    .owned_flycloak_set
+                    .iter()
+                    .copied()
+                    .collect(),
                 ..Default::default()
             },
         );
