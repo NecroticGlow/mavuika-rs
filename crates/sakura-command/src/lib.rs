@@ -2,7 +2,7 @@ use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
 use sakura_data::excel::monster_excel_config_collection;
 use sakura_entity::{
-    common::{GrowCurveConfigType, Level, Visible, LifeState}, // 移除 EntityCounter 的导入
+    common::{GrowCurveConfigType, Level, Visible}, // 移除 EntityCounter 的导入
     monster::{MonsterBundle, MonsterID},
     transform::{Transform, Vector3},
     util::to_protocol_entity_id,
@@ -149,5 +149,20 @@ impl EntityCounter {
     pub fn next(&mut self) -> u32 {
         self.current_id += 1; // 递增当前ID
         self.current_id
+    }
+}
+
+// 定义 LifeState 枚举并实现 Default 特征
+#[derive(Debug, Clone, Copy)] // 根据需要添加其他特征
+pub enum LifeState {
+    Alive,
+    Dead,
+    // 其他状态...
+}
+
+// 实现 Default 特征
+impl Default for LifeState {
+    fn default() -> Self {
+        LifeState::Alive // 默认状态
     }
 }
