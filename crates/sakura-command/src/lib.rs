@@ -2,7 +2,7 @@ use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
 use sakura_data::excel::monster_excel_config_collection;
 use sakura_entity::{
-    common::{EntityCounter, GrowCurveConfigType, Level, Visible},
+    common::{EntityCounter, GrowCurveConfigType, Level, Visible, LifeState}, // 确保导入 LifeState
     monster::{MonsterBundle, MonsterID},
     transform::{Transform, Vector3},
     util::to_protocol_entity_id,
@@ -108,6 +108,7 @@ pub fn debug_command_handler(
                                 rotation: Vector3::default(),
                             },
                             fight_properties,
+                            life_state: LifeState::default(), // 这里提供了 life_state 字段
                         }).insert(Visible);
                     } else {
                         // 处理字母输入以读取文件
@@ -131,5 +132,21 @@ pub fn debug_command_handler(
                 jump_events.send(ScenePlayerJumpEvent(command.executor_uid, destination));
             }
         }
+    }
+}
+
+// EntityCounter 结构体及其实现
+pub struct EntityCounter {
+    current_id: u32,
+}
+
+impl EntityCounter {
+    pub fn new() -> Self {
+        Self { current_id: 0 }
+    }
+
+    pub fn next(&mut self) -> u32 {
+        self.current_id += 1; // 递增当前ID
+        self.current_id
     }
 }
