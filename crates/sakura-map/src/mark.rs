@@ -27,8 +27,8 @@ pub fn mark_map(
                                     .name
                                     .split(' ')
                                     .next()
-                                    .map(|s| s.parse::<u32>().ok())
-                                    .flatten(),
+                                    .and_then(|s| s.parse::<u32>().ok())
+                                    .map(|id| id.to_string()), // 转换为 Option<String>
                                 position: (
                                     mark.pos.unwrap_or_default().x,
                                     mark.pos.unwrap_or_default().z,
@@ -45,8 +45,7 @@ pub fn mark_map(
                                     mark.name
                                         .split(' ')
                                         .next()
-                                        .map(|s| s.parse::<f32>().ok())
-                                        .flatten(),
+                                        .and_then(|s| s.parse::<f32>().ok()), // 直接处理，不需要 flatten
                                     mark.pos.unwrap_or_default().z,
                                 ),
                             },
