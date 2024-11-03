@@ -108,7 +108,7 @@ pub fn debug_command_handler(
                                 rotation: Vector3::default(),
                             },
                             fight_properties,
-                            life_state: LifeState::default(), // 确保 LifeState 有 default 方法
+                            life_state: sakura_entity::common::LifeState::default(),
                         }).insert(Visible);
                     } else {
                         // 处理字母输入以读取文件
