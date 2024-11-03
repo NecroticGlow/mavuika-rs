@@ -2,7 +2,7 @@ use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
 use sakura_data::excel::monster_excel_config_collection;
 use sakura_entity::{
-    common::{EntityCounter, GrowCurveConfigType, Level, Visible, LifeState}, // 确保导入 LifeState
+    common::{GrowCurveConfigType, Level, Visible, LifeState}, // 移除 EntityCounter 的导入
     monster::{MonsterBundle, MonsterID},
     transform::{Transform, Vector3},
     util::to_protocol_entity_id,
@@ -18,7 +18,7 @@ use bevy_ecs::system::Resource; // 添加 Resource
 
 mod util;
 
-#[derive(Resource)] // 添加该宏以实现 Resource 特征
+#[derive(Resource)] // 确保 LuaShellSettings 是一个资源
 pub struct LuaShellSettings {
     pub startup_payloads: Vec<Box<[u8]>>, // 定义 LuaShellSettings 结构体
 }
@@ -108,7 +108,7 @@ pub fn debug_command_handler(
                                 rotation: Vector3::default(),
                             },
                             fight_properties,
-                            life_state: LifeState::default(), // 这里提供了 life_state 字段
+                            life_state: LifeState::default(), // 确保 LifeState 有 default 方法
                         }).insert(Visible);
                     } else {
                         // 处理字母输入以读取文件
@@ -135,7 +135,8 @@ pub fn debug_command_handler(
     }
 }
 
-// EntityCounter 结构体及其实现
+// 确保 EntityCounter 结构体及其实现
+#[derive(Resource)] // 确保 EntityCounter 是一个资源
 pub struct EntityCounter {
     current_id: u32,
 }
