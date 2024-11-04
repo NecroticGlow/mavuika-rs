@@ -94,7 +94,8 @@ pub fn player_join_team(
                 },
                 appearance: AvatarAppearance {
                     flycloak_id: to_spawn.wearing_flycloak_id,
-                    costume_id: 0, // TODO!
+                    costume_id: to_spawn.costume_id,
+                    trace_effect_id: to_spawn.trace_effect_id,
                 },
                 transform: Transform {
                     position: player_info.world_position.position.into(),

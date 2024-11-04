@@ -289,6 +289,17 @@ impl From<crate::client::ForceUpdateInfo> for ForceUpdateInfo {
         }
     }
 }
+impl From<crate::client::ClientLoadingCostumeVerificationNotify>
+for ClientLoadingCostumeVerificationNotify {
+    fn from(value: crate::client::ClientLoadingCostumeVerificationNotify) -> Self {
+        Self {
+            costume_id: value.costume_id.into(),
+            prefab_hash: value.prefab_hash.into(),
+            guid: value.guid.into(),
+            ..Default::default()
+        }
+    }
+}
 impl From<crate::client::AvatarTeam> for AvatarTeam {
     fn from(value: crate::client::AvatarTeam) -> Self {
         Self {
@@ -419,7 +430,17 @@ impl From<crate::client::AvatarDataNotify> for AvatarDataNotify {
                 .into_iter()
                 .map(|v| v.into())
                 .collect(),
+            owned_costume_list: value
+                .owned_costume_list
+                .into_iter()
+                .map(|v| v.into())
+                .collect(),
             choose_avatar_guid: value.choose_avatar_guid.into(),
+            owned_trace_effect_list: value
+                .owned_trace_effect_list
+                .into_iter()
+                .map(|v| v.into())
+                .collect(),
             avatar_team_map: value
                 .avatar_team_map
                 .into_iter()
@@ -560,6 +581,15 @@ for query_curr_region_http_rsp::Detail {
                 Self::StopServer(v.into())
             }
             _ => unreachable!(),
+        }
+    }
+}
+impl From<crate::client::AvatarChangeTraceEffectReq> for AvatarChangeTraceEffectReq {
+    fn from(value: crate::client::AvatarChangeTraceEffectReq) -> Self {
+        Self {
+            avatar_guid: value.avatar_guid.into(),
+            trace_effect_id: value.trace_effect_id.into(),
+            ..Default::default()
         }
     }
 }
@@ -1069,6 +1099,7 @@ impl From<crate::client::AvatarInfo> for AvatarInfo {
             excel_info: value.excel_info.map(|v| v.into()),
             anim_hash: value.anim_hash.into(),
             mirror_avatar_info: value.mirror_avatar_info.map(|v| v.into()),
+            trace_effect_id: value.trace_effect_id.into(),
             ..Default::default()
         }
     }
@@ -1122,6 +1153,16 @@ impl From<crate::client::scene_entity_info::Entity> for scene_entity_info::Entit
             crate::client::scene_entity_info::Entity::Npc(v) => Self::Npc(v.into()),
             crate::client::scene_entity_info::Entity::Gadget(v) => Self::Gadget(v.into()),
             _ => unreachable!(),
+        }
+    }
+}
+impl From<crate::client::AvatarChangeTraceEffectRsp> for AvatarChangeTraceEffectRsp {
+    fn from(value: crate::client::AvatarChangeTraceEffectRsp) -> Self {
+        Self {
+            trace_effect_id: value.trace_effect_id.into(),
+            retcode: value.retcode.into(),
+            avatar_guid: value.avatar_guid.into(),
+            ..Default::default()
         }
     }
 }
@@ -1246,6 +1287,14 @@ impl From<crate::client::GadgetPlayInfo> for GadgetPlayInfo {
             start_cd: value.start_cd.into(),
             start_time: value.start_time.into(),
             progress: value.progress.into(),
+            ..Default::default()
+        }
+    }
+}
+impl From<crate::client::AvatarChangeCostumeNotify> for AvatarChangeCostumeNotify {
+    fn from(value: crate::client::AvatarChangeCostumeNotify) -> Self {
+        Self {
+            entity_info: value.entity_info.map(|v| v.into()),
             ..Default::default()
         }
     }
@@ -1567,6 +1616,16 @@ impl From<crate::client::SceneForceUnlockNotify> for SceneForceUnlockNotify {
         }
     }
 }
+impl From<crate::client::HomeAvatarCostumeChangeNotify>
+for HomeAvatarCostumeChangeNotify {
+    fn from(value: crate::client::HomeAvatarCostumeChangeNotify) -> Self {
+        Self {
+            costume_id: value.costume_id.into(),
+            avatar_id: value.avatar_id.into(),
+            ..Default::default()
+        }
+    }
+}
 impl From<crate::client::AiSyncInfo> for AiSyncInfo {
     fn from(value: crate::client::AiSyncInfo) -> Self {
         Self {
@@ -1695,6 +1754,15 @@ impl From<crate::client::UnlockTransPointReq> for UnlockTransPointReq {
         Self {
             point_id: value.point_id.into(),
             scene_id: value.scene_id.into(),
+            ..Default::default()
+        }
+    }
+}
+impl From<crate::client::AvatarChangeTraceEffectNotify>
+for AvatarChangeTraceEffectNotify {
+    fn from(value: crate::client::AvatarChangeTraceEffectNotify) -> Self {
+        Self {
+            entity_info: value.entity_info.map(|v| v.into()),
             ..Default::default()
         }
     }
@@ -2239,6 +2307,7 @@ impl From<crate::client::SceneAvatarInfo> for SceneAvatarInfo {
             cur_vehicle_info: value.cur_vehicle_info.map(|v| v.into()),
             excel_info: value.excel_info.map(|v| v.into()),
             anim_hash: value.anim_hash.into(),
+            trace_effect_id: value.trace_effect_id.into(),
             ..Default::default()
         }
     }
@@ -2406,6 +2475,15 @@ impl From<crate::client::MassivePropSyncInfo> for MassivePropSyncInfo {
         Self {
             id: value.id.into(),
             prop_list: value.prop_list.into_iter().map(|v| v.into()).collect(),
+            ..Default::default()
+        }
+    }
+}
+impl From<crate::client::AvatarChangeCostumeReq> for AvatarChangeCostumeReq {
+    fn from(value: crate::client::AvatarChangeCostumeReq) -> Self {
+        Self {
+            costume_id: value.costume_id.into(),
+            avatar_guid: value.avatar_guid.into(),
             ..Default::default()
         }
     }
@@ -2644,6 +2722,16 @@ impl From<crate::client::SetUpAvatarTeamRsp> for SetUpAvatarTeamRsp {
                 .map(|v| v.into())
                 .collect(),
             team_id: value.team_id.into(),
+            retcode: value.retcode.into(),
+            ..Default::default()
+        }
+    }
+}
+impl From<crate::client::AvatarChangeCostumeRsp> for AvatarChangeCostumeRsp {
+    fn from(value: crate::client::AvatarChangeCostumeRsp) -> Self {
+        Self {
+            costume_id: value.costume_id.into(),
+            avatar_guid: value.avatar_guid.into(),
             retcode: value.retcode.into(),
             ..Default::default()
         }

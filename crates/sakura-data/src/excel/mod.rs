@@ -1,8 +1,10 @@
+mod avatar_costume_excel_config;
 mod avatar_curve_excel_config;
 mod avatar_excel_config;
 mod avatar_flycloak_excel_config;
 mod avatar_promote_excel_config;
 mod avatar_skill_depot_excel_config;
+mod avatar_trace_effect_excel_config;
 mod map_area_config;
 mod monster_curve_excel_config;
 mod monster_excel_config;
@@ -11,11 +13,13 @@ mod weapon_curve_excel_config;
 mod weapon_excel_config;
 
 pub mod common;
+pub use avatar_costume_excel_config::*;
 pub use avatar_curve_excel_config::*;
 pub use avatar_excel_config::*;
 pub use avatar_flycloak_excel_config::*;
 pub use avatar_promote_excel_config::*;
 pub use avatar_skill_depot_excel_config::*;
+pub use avatar_trace_effect_excel_config::*;
 pub use map_area_config::*;
 pub use monster_curve_excel_config::*;
 pub use monster_excel_config::*;
@@ -65,6 +69,8 @@ macro_rules! excel_loader {
 
 excel_loader! {
     AvatarExcelConfig;
+    AvatarCostumeExcelConfig;
+    AvatarTraceEffectExcelConfig;
     AvatarFlycloakExcelConfig;
     AvatarSkillDepotExcelConfig;
     AvatarCurveExcelConfig;
